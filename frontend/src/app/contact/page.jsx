@@ -8,8 +8,8 @@ export default function ContactPage() {
                     <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 mb-6">
                         Get in <span className="text-orange-600">Touch</span>
                     </h1>
-                    <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-                        Have questions about our technology or need a consultation? Our team is here to help you transition to solar energy.
+                    <p className="text-xl text-slate-600 max-w-2xl mx-auto italic font-medium">
+                        Have questions about our inspection technology or need a drone survey consultation? Our team is here to help you audit your solar infrastructure.
                     </p>
                 </div>
 
@@ -20,7 +20,7 @@ export default function ContactPage() {
                             {
                                 icon: <Mail className="text-orange-500" />,
                                 title: "Email Us",
-                                detail: "info@solarthermal.com",
+                                detail: "info@solarinspection.com",
                                 sub: "Response within 24 hours"
                             },
                             {

@@ -59,12 +59,12 @@ export default function RegisterPage() {
                     <h2 className="text-4xl font-extrabold mb-6 leading-tight">Start your journey to energy independence.</h2>
                     <ul className="space-y-4 mb-8">
                         {[
-                            "Detailed energy analysis",
-                            "Custom system configuration",
-                            "Automated government rebate filing",
-                            "24/7 technical support"
+                            "High-precision thermal audits",
+                            "AI-powered fault detection",
+                            "Certified drone pilots",
+                            "Actionable efficiency reports"
                         ].map((item, i) => (
-                            <li key={i} className="flex items-center space-x-3 text-orange-100">
+                            <li key={i} className="flex items-center space-x-3 text-orange-100 italic">
                                 <div className="w-5 h-5 rounded-full bg-orange-400 flex items-center justify-center text-[10px] font-bold">✓</div>
                                 <span>{item}</span>
                             </li>
@@ -79,10 +79,10 @@ export default function RegisterPage() {
                     <div className="text-center mb-10">
                         <Link href="/" className="inline-flex items-center space-x-2 mb-8 group">
                             <Sun className="h-10 w-10 text-orange-500 group-hover:rotate-45 transition-transform duration-500" />
-                            <span className="text-3xl font-bold">Solar<span className="text-orange-600">Thermal</span></span>
+                            <span className="text-3xl font-bold">Solar<span className="text-orange-600"> Inspection</span></span>
                         </Link>
                         <h1 className="text-2xl font-bold text-slate-900">Create your account</h1>
-                        <p className="text-slate-500 mt-2">Join the revolution of sustainable energy</p>
+                        <p className="text-slate-500 mt-2">Join the revolution of professional solar auditing</p>
                     </div>
 
                     {success ? (

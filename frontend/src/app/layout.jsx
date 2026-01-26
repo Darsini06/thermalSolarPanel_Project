@@ -2,8 +2,8 @@ import "./globals.css";
 import Navbar from "../components/Navbar";
 
 export const metadata = {
-  title: "SolarThermal | Clean Energy Solutions",
-  description: "Advanced Thermal Solar Panel Solutions for a Sustainable Future",
+  title: "Solar Inspection | Professional Diagnostic Solutions",
+  description: "Advanced Drone & Thermographic Solar Inspection Solutions",
 };
 
 export default function RootLayout({ children }) {
@@ -16,9 +16,9 @@ export default function RootLayout({ children }) {
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
             <div className="mb-6 md:mb-0">
               <span className="text-xl font-bold text-white">
-                Solar<span className="text-orange-500">Thermal</span>
+                Solar<span className="text-orange-500"> Inspection</span>
               </span>
-              <p className="mt-2 text-sm">Empowering the world with solar thermal energy.</p>
+              <p className="mt-2 text-sm">Empowering solar efficiency with advanced inspections.</p>
             </div>
             <div className="flex space-x-6">
               <span className="hover:text-white transition-colors cursor-pointer">Privacy Policy</span>
@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
             </div>
           </div>
           <div className="max-w-7xl mx-auto mt-8 pt-8 border-t border-slate-800 text-center text-sm">
-            © {new Date().getFullYear()} SolarThermal Inc. All rights reserved.
+            © {new Date().getFullYear()} Solar Inspection Inc. All rights reserved.
           </div>
         </footer>
       </body>

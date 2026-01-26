@@ -53,8 +53,8 @@ export default function LoginPage() {
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] border-[40px] border-white rounded-full"></div>
                 </div>
                 <div className="relative z-10 text-white max-w-md">
-                    <h2 className="text-4xl font-extrabold mb-6 leading-tight">Welcome back to the future of energy.</h2>
-                    <p className="text-orange-100 text-lg mb-8">Access your dashboard to monitor your solar collectors and track your savings in real-time.</p>
+                    <h2 className="text-4xl font-extrabold mb-6 leading-tight">Welcome back to the future of auditing.</h2>
+                    <p className="text-orange-100 text-lg mb-8 italic">Access your dashboard to monitor your solar assets and track your inspection reports in real-time.</p>
                     <div className="flex -space-x-3">
                         {[1, 2, 3, 4].map(i => (
                             <div key={i} className="w-12 h-12 rounded-full border-2 border-orange-600 bg-orange-200"></div>
@@ -71,7 +71,7 @@ export default function LoginPage() {
                     <div className="text-center mb-10">
                         <Link href="/" className="inline-flex items-center space-x-2 mb-8 group">
                             <Sun className="h-10 w-10 text-orange-500 group-hover:rotate-45 transition-transform duration-500" />
-                            <span className="text-3xl font-bold">Solar<span className="text-orange-600">Thermal</span></span>
+                            <span className="text-3xl font-bold">Solar<span className="text-orange-600"> Inspection</span></span>
                         </Link>
                         <h1 className="text-2xl font-bold text-slate-900">Sign in to your account</h1>
                         <p className="text-slate-500 mt-2">Professional solar management at your fingertips</p>

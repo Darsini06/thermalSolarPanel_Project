@@ -9,8 +9,7 @@ import axios from "axios";
 export default function UploadPage() {
     const router = useRouter();
     const [user, setUser] = useState(null);
-    const [file1, setFile1] = useState(null);
-    const [file2, setFile2] = useState(null);
+    const [driveLink, setDriveLink] = useState("");
     const [uploading, setUploading] = useState(false);
     const [status, setStatus] = useState({ type: "", message: "" });
 
@@ -24,35 +23,36 @@ export default function UploadPage() {
         }
     }, [router]);
 
-    const handleUpload = async (fileNumber) => {
-        const file = fileNumber === 1 ? file1 : file2;
-        if (!file) {
-            setStatus({ type: "error", message: `Please select File ${fileNumber} first.` });
+    const handleLinkSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!driveLink) {
+            setStatus({ type: "error", message: "Please provide a Google Drive link." });
+            return;
+        }
+
+        // Basic Google Drive link validation
+        if (!driveLink.includes("drive.google.com")) {
+            setStatus({ type: "error", message: "Please enter a valid Google Drive link (e.g., drive.google.com/...)." });
             return;
         }
 
         setUploading(true);
-        setStatus({ type: "info", message: `Uploading File ${fileNumber} to Google Drive...` });
+        setStatus({ type: "info", message: "Verifying and saving link..." });
 
         try {
-            const formData = new FormData();
-            formData.append("file", file);
-
-            // Note: This calls the preservation route I created earlier
-            const response = await axios.post("/api/upload", formData, {
-                headers: { "Content-Type": "multipart/form-data" }
-            });
+            // Mock API call to save the link
+            await new Promise(resolve => setTimeout(resolve, 1500));
 
             setStatus({
                 type: "success",
-                message: `File ${fileNumber} (${file.name}) uploaded successfully! ID: Drive_Mock_ID_${Math.floor(Math.random() * 1000)}`
+                message: "Inspection documentation link successfully registered with your project!"
             });
 
-            if (fileNumber === 1) setFile1(null);
-            if (fileNumber === 2) setFile2(null);
+            setDriveLink("");
 
         } catch (err) {
-            setStatus({ type: "error", message: "Upload failed. Please ensure Google API is configured." });
+            setStatus({ type: "error", message: "Failed to save link. Please try again later." });
         } finally {
             setUploading(false);
         }
@@ -61,104 +61,99 @@ export default function UploadPage() {
     if (!user) return null;
 
     return (
-        <div className="min-h-screen bg-slate-50 pt-32 pb-20 px-4">
-            <div className="max-w-4xl mx-auto">
-                <Link href="/" className="inline-flex items-center text-slate-500 hover:text-orange-600 mb-8 font-medium transition-colors">
+        <div className="min-h-screen bg-white pt-32 pb-20 px-4">
+            <div className="max-w-3xl mx-auto">
+                <Link href="/" className="inline-flex items-center text-slate-500 hover:text-orange-600 mb-8 font-semibold transition-all hover:-translate-x-1">
                     <ArrowLeft size={18} className="mr-2" />
-                    Back to Home
+                    Back to Dashboard
                 </Link>
 
-                <div className="bg-white rounded-[3rem] p-8 md:p-12 shadow-2xl shadow-slate-200 border border-slate-100">
-                    <div className="flex items-center space-x-4 mb-8">
-                        <div className="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center">
-                            <HardDrive className="text-orange-600" size={32} />
-                        </div>
-                        <div>
-                            <h1 className="text-3xl font-bold text-slate-900">Google Drive Upload</h1>
-                            <p className="text-slate-500">Securely upload your solar project documents</p>
-                        </div>
-                    </div>
+                <div className="bg-white rounded-[2.5rem] p-8 md:p-14 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-100 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-orange-50/50 rounded-full translate-x-16 -translate-y-16"></div>
 
-                    {status.message && (
-                        <div className={`mb-8 p-4 rounded-2xl flex items-center space-x-3 animate-in fade-in slide-in-from-top-2 ${status.type === "success" ? "bg-emerald-50 text-emerald-700 border border-emerald-100" :
-                                status.type === "error" ? "bg-red-50 text-red-700 border border-red-100" :
-                                    "bg-blue-50 text-blue-700 border border-blue-100"
-                            }`}>
-                            {status.type === "success" ? <CheckCircle size={20} /> : status.type === "error" ? <AlertCircle size={20} /> : <Loader2 size={20} className="animate-spin" />}
-                            <span className="font-medium text-sm">{status.message}</span>
-                        </div>
-                    )}
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {/* Slot 1 */}
-                        <div className="p-8 rounded-[2rem] border-2 border-dashed border-slate-200 bg-slate-50 hover:bg-slate-100/50 transition-all flex flex-col items-center text-center">
-                            <div className="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center mb-4">
-                                <FileUp className="text-slate-400" size={24} />
+                    <div className="relative z-10">
+                        <div className="flex items-center space-x-5 mb-10">
+                            <div className="w-16 h-16 bg-orange-600 rounded-3xl flex items-center justify-center shadow-lg shadow-orange-200">
+                                <HardDrive className="text-white" size={32} />
                             </div>
-                            <h3 className="font-bold text-slate-800 mb-2">Technical Blueprints</h3>
-                            <p className="text-xs text-slate-500 mb-6">PDF, PNG, JPG (Max 10MB)</p>
-
-                            <label className="w-full">
-                                <input
-                                    type="file"
-                                    className="hidden"
-                                    onChange={(e) => setFile1(e.target.files[0])}
-                                />
-                                <div className="cursor-pointer py-3 px-6 bg-white border border-slate-200 rounded-xl font-bold text-sm shadow-sm hover:border-orange-500 transition-all">
-                                    {file1 ? file1.name : "Select File 1"}
-                                </div>
-                            </label>
-
-                            {file1 && (
-                                <button
-                                    onClick={() => handleUpload(1)}
-                                    disabled={uploading}
-                                    className="w-full mt-4 py-3 bg-orange-600 text-white rounded-xl font-bold shadow-lg shadow-orange-200 hover:bg-orange-700 disabled:opacity-50 flex items-center justify-center space-x-2"
-                                >
-                                    {uploading ? <Loader2 className="animate-spin" size={18} /> : <span>Upload to Drive</span>}
-                                </button>
-                            )}
-                        </div>
-
-                        {/* Slot 2 */}
-                        <div className="p-8 rounded-[2rem] border-2 border-dashed border-slate-200 bg-slate-50 hover:bg-slate-100/50 transition-all flex flex-col items-center text-center">
-                            <div className="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center mb-4">
-                                <FileUp className="text-slate-400" size={24} />
+                            <div>
+                                <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Project Documentation</h1>
+                                <p className="text-slate-500 font-medium">Link your Google Drive inspection data</p>
                             </div>
-                            <h3 className="font-bold text-slate-800 mb-2">Site Photographs</h3>
-                            <p className="text-xs text-slate-500 mb-6">PDF, PNG, JPG (Max 10MB)</p>
-
-                            <label className="w-full">
-                                <input
-                                    type="file"
-                                    className="hidden"
-                                    onChange={(e) => setFile2(e.target.files[0])}
-                                />
-                                <div className="cursor-pointer py-3 px-6 bg-white border border-slate-200 rounded-xl font-bold text-sm shadow-sm hover:border-orange-500 transition-all">
-                                    {file2 ? file2.name : "Select File 2"}
-                                </div>
-                            </label>
-
-                            {file2 && (
-                                <button
-                                    onClick={() => handleUpload(2)}
-                                    disabled={uploading}
-                                    className="w-full mt-4 py-3 bg-orange-600 text-white rounded-xl font-bold shadow-lg shadow-orange-200 hover:bg-orange-700 disabled:opacity-50 flex items-center justify-center space-x-2"
-                                >
-                                    {uploading ? <Loader2 className="animate-spin" size={18} /> : <span>Upload to Drive</span>}
-                                </button>
-                            )}
                         </div>
-                    </div>
 
-                    <div className="mt-12 p-6 bg-orange-50 rounded-2xl border border-orange-100">
-                        <h4 className="font-bold text-orange-800 mb-2 flex items-center">
-                            <CheckCircle size={18} className="mr-2" />
-                            Registration Perk
-                        </h4>
-                        <p className="text-sm text-orange-700 leading-relaxed font-medium">
-                            Welcome <span className="capitalize">{user.name}</span>! As a registered member, you have exclusive access to our Google Drive storage. Your files are automatically tagged with your project ID for our engineering team.
-                        </p>
+                        {status.message && (
+                            <div className={`mb-10 p-5 rounded-3xl flex items-center space-x-4 animate-in fade-in slide-in-from-top-4 duration-500 ${status.type === "success" ? "bg-emerald-50 text-emerald-700 border border-emerald-100/50" :
+                                status.type === "error" ? "bg-red-50 text-red-700 border border-red-100/50" :
+                                    "bg-orange-50 text-orange-700 border border-orange-100/50"
+                                }`}>
+                                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${status.type === "success" ? "bg-emerald-100" : status.type === "error" ? "bg-red-100" : "bg-orange-100"}`}>
+                                    {status.type === "success" ? <CheckCircle size={22} /> : status.type === "error" ? <AlertCircle size={22} /> : <Loader2 size={22} className="animate-spin" />}
+                                </div>
+                                <span className="font-bold text-base">{status.message}</span>
+                            </div>
+                        )}
+
+                        <form onSubmit={handleLinkSubmit} className="space-y-8">
+                            <div className="space-y-3">
+                                <label htmlFor="driveLink" className="block text-sm font-bold text-slate-700 uppercase tracking-wider ml-1">
+                                    Google Drive Shared Link
+                                </label>
+                                <div className="relative flex items-center group">
+                                    <div className="absolute left-5 text-slate-400 group-focus-within:text-orange-500 transition-colors">
+                                        <FileUp size={22} />
+                                    </div>
+                                    <input
+                                        id="driveLink"
+                                        type="url"
+                                        placeholder="https://drive.google.com/drive/folders/..."
+                                        className="w-full pl-14 pr-6 py-5 bg-slate-50 border-2 border-slate-100 rounded-[1.5rem] focus:bg-white focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 outline-none transition-all font-medium text-slate-900 placeholder:text-slate-400"
+                                        value={driveLink}
+                                        onChange={(e) => setDriveLink(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <p className="text-sm text-slate-500 ml-1 italic">
+                                    * Please ensure the folder/file has "Anyone with the link" viewer access.
+                                </p>
+                            </div>
+
+                            <button
+                                type="submit"
+                                disabled={uploading}
+                                className="w-full py-5 bg-slate-900 text-white rounded-[1.5rem] font-bold text-lg shadow-2xl hover:bg-slate-800 active:scale-[0.98] transition-all flex items-center justify-center space-x-3 disabled:opacity-70"
+                            >
+                                {uploading ? (
+                                    <>
+                                        <Loader2 className="animate-spin" size={24} />
+                                        <span>Submitting to Project...</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <span>Submit Documentation</span>
+                                        <ArrowLeft className="rotate-180" size={20} />
+                                    </>
+                                )}
+                            </button>
+                        </form>
+
+                        <div className="mt-14 pt-10 border-t border-slate-100">
+                            <div className="bg-orange-50/50 rounded-[2rem] p-8 border border-orange-100/50">
+                                <div className="flex items-start space-x-4">
+                                    <div className="p-3 bg-white rounded-2xl shadow-sm text-orange-600">
+                                        <CheckCircle size={24} />
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-slate-900 text-lg mb-1">Professional Inspection Protocol</h4>
+                                        <p className="text-slate-600 leading-relaxed font-medium">
+                                            Registered Partner ID: <span className="text-orange-600 font-bold">INS-{Math.floor(1000 + Math.random() * 9000)}</span>
+                                            <br />
+                                            Once submitted, our engineering team will begin reviewing your thermographic data within 24 hours. Keep your link active during the review period.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

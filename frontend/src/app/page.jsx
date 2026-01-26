@@ -38,10 +38,10 @@ export default function HomePage() {
             )}
 
             <h1 className="text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight mb-8">
-              Harness the Power of <span className="text-orange-600">Solar Thermal</span> Energy
+              Expert <span className="text-orange-600">Solar Inspection</span> Services
             </h1>
             <p className="text-xl text-slate-600 mb-10 leading-relaxed">
-              Our advanced thermal solar panels convert sunlight into efficient heat for your home or business, reducing carbon footprint and energy costs simultaneously.
+              Ensure your solar infrastructure is operating at peak performance with our professional drone-based and thermographic inspection solutions.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
@@ -130,9 +130,9 @@ export default function HomePage() {
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 font-primary">Why Solar Thermal?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 font-primary">Our Inspection Excellence</h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto italic font-medium">
-              More than just electricity — we provide heat, efficiency, and sustainability.
+              Precision auditing to maximize your solar asset's lifespan and output.
             </p>
           </div>
 
@@ -140,18 +140,18 @@ export default function HomePage() {
             {[
               {
                 icon: <Zap className="text-orange-500" />,
-                title: "Maximum Efficiency",
-                desc: "Solar thermal collectors are up to 70% more efficient at harvesting energy than traditional PV panels.",
+                title: "Thermographic Analysis",
+                desc: "Identify micro-cracks and hot spots within cells that are invisible to the naked eye using high-res thermal imaging.",
               },
               {
                 icon: <Shield className="text-blue-500" />,
-                title: "Built to Last",
-                desc: "Weather-resistant materials and robust design ensure your system operates flawlessly for over 25 years.",
+                title: "Drone-Based Surveys",
+                desc: "Rapid, safe, and cost-effective aerial inspections for large-scale solar farms and hard-to-reach rooftop installations.",
               },
               {
                 icon: <Globe className="text-emerald-500" />,
-                title: "Eco-Friendly",
-                desc: "Significantly reduce your residential CO2 emissions by switching to solar thermal water heating solutions.",
+                title: "Performance Audits",
+                desc: "Comprehensive diagnostic reports that provide actionable insights to improve overall system efficiency.",
               },
             ].map((feature, i) => (
               <div

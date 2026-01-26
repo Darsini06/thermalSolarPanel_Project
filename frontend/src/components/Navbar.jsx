@@ -49,7 +49,7 @@ export default function Navbar() {
                     <Link href="/" className="flex items-center space-x-2">
                         <Sun className="h-8 w-8 text-orange-500" />
                         <span className={`text-2xl font-bold ${isScrolled ? "text-slate-900" : "text-slate-800"}`}>
-                            Solar<span className="text-orange-500">Thermal</span>
+                            Solar<span className="text-orange-500"> Inspection</span>
                         </span>
                     </Link>
 
