@@ -1,414 +1,216 @@
 "use client";
 
-import { useState } from "react";
-import { Upload, LogIn, LogOut, Home, User } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { ArrowRight, Zap, Shield, Globe, Sun, FileUp, Database, HardDrive, CheckCircle } from "lucide-react";
+import Link from "next/link";
 
 export default function HomePage() {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [showLogin, setShowLogin] = useState(false);
-  const [showUpload, setShowUpload] = useState(false);
-  const [file1, setFile1] = useState(null);
-  const [file2, setFile2] = useState(null);
+  const [user, setUser] = useState(null);
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    // Simple mock login
-    if (username === "admin" && password === "1234") {
-      setLoggedIn(true);
-      setShowLogin(false);
-      setUsername("");
-      setPassword("");
-    } else {
-      alert("Invalid credentials. Use admin/1234 for demo.");
+  useEffect(() => {
+    const name = localStorage.getItem("user_name");
+    const token = localStorage.getItem("auth_token");
+    if (token && name) {
+      setUser({ name, token });
     }
-  };
-
-  const handleLogout = () => {
-    setLoggedIn(false);
-    setShowUpload(false);
-  };
-
-  const handleUpload = (file, driveNumber) => {
-    if (!file) {
-      alert(`Please select a file for Google Drive ${driveNumber}`);
-      return;
-    }
-    alert(`Uploading "${file.name}" to Google Drive ${driveNumber}...`);
-    // Here you can integrate Google Drive API
-    // Reset file after upload
-    if (driveNumber === 1) setFile1(null);
-    else setFile2(null);
-  };
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 font-sans">
-      {/* Navigation Bar */}
-      <nav className="w-full bg-white shadow-md px-6 py-4">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          {/* Logo/Brand */}
-          <div className="flex items-center space-x-3">
-            <div className="bg-gradient-to-r from-blue-600 to-teal-500 p-2 rounded-lg">
-              <Home className="h-6 w-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-gray-800">ThermalSolar Drone</h1>
-              <p className="text-xs text-gray-500">Advanced Panel Inspection</p>
-            </div>
-          </div>
-
-          {/* Navigation Links */}
-          <div className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="text-gray-700 hover:text-blue-600 font-medium">
-              Features
-            </a>
-            <a href="#how-it-works" className="text-gray-700 hover:text-blue-600 font-medium">
-              How It Works
-            </a>
-            <a href="#benefits" className="text-gray-700 hover:text-blue-600 font-medium">
-              Benefits
-            </a>
-            <a href="#contact" className="text-gray-700 hover:text-blue-600 font-medium">
-              Contact
-            </a>
-          </div>
-
-          {/* Right side - Auth & Upload */}
-          <div className="flex items-center space-x-4">
-            {loggedIn ? (
-              <>
-                <button
-                  onClick={() => setShowUpload(true)}
-                  className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-teal-500 text-white px-4 py-2 rounded-lg hover:opacity-90 transition"
-                >
-                  <Upload className="h-4 w-4" />
-                  <span>Upload</span>
-                </button>
-                <div className="flex items-center space-x-3">
-                  <div className="h-8 w-8 bg-blue-100 rounded-full flex items-center justify-center">
-                    <User className="h-5 w-5 text-blue-600" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-gray-800">Welcome, Admin</p>
-                    <button
-                      onClick={handleLogout}
-                      className="flex items-center space-x-1 text-xs text-gray-500 hover:text-red-600"
-                    >
-                      <LogOut className="h-3 w-3" />
-                      <span>Logout</span>
-                    </button>
-                  </div>
-                </div>
-              </>
-            ) : (
-              <button
-                onClick={() => setShowLogin(true)}
-                className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-teal-500 text-white px-4 py-2 rounded-lg hover:opacity-90 transition"
-              >
-                <LogIn className="h-4 w-4" />
-                <span>Login</span>
-              </button>
-            )}
-          </div>
-        </div>
-      </nav>
-
-      {/* Login Modal */}
-      {showLogin && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-8">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-800">Login to Your Account</h2>
-              <button
-                onClick={() => setShowLogin(false)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                ✕
-              </button>
-            </div>
-            <form onSubmit={handleLogin} className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Username
-                </label>
-                <input
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                  placeholder="Enter username"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                  placeholder="Enter password"
-                  required
-                />
-              </div>
-              <div className="text-sm text-gray-600">
-                <p>Demo credentials: admin / 1234</p>
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-gradient-to-r from-blue-600 to-teal-500 text-white py-3 rounded-lg font-medium hover:opacity-90 transition"
-              >
-                Sign In
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* Upload Modal */}
-      {showUpload && loggedIn && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full p-8">
-            <div className="flex justify-between items-center mb-8">
-              <div>
-                <h2 className="text-2xl font-bold text-gray-800">Upload Thermal Images</h2>
-                <p className="text-gray-600 mt-1">Select files to upload to Google Drive</p>
-              </div>
-              <button
-                onClick={() => setShowUpload(false)}
-                className="text-gray-500 hover:text-gray-700 text-2xl"
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-6 mb-8">
-              {/* Google Drive 1 */}
-              <div className="border-2 border-dashed border-blue-200 rounded-xl p-6 hover:border-blue-400 transition bg-blue-50">
-                <div className="text-center mb-4">
-                  <div className="h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <Upload className="h-6 w-6 text-blue-600" />
-                  </div>
-                  <h3 className="font-semibold text-lg mb-1 text-gray-800">Google Drive 1</h3>
-                  <p className="text-sm text-gray-600">Primary storage</p>
-                </div>
-                <input
-                  type="file"
-                  accept="image/*,.pdf,.csv"
-                  onChange={(e) => setFile1(e.target.files ? e.target.files[0] : null)}
-                  className="w-full mb-4 text-sm"
-                />
-                <button
-                  onClick={() => handleUpload(file1, 1)}
-                  disabled={!file1}
-                  className={`w-full py-3 rounded-lg font-medium transition ${
-                    file1
-                      ? "bg-gradient-to-r from-blue-600 to-teal-500 text-white hover:opacity-90"
-                      : "bg-gray-100 text-gray-400 cursor-not-allowed"
-                  }`}
-                >
-                  {file1 ? `Upload ${file1.name}` : "Select File First"}
-                </button>
-                {file1 && (
-                  <p className="mt-3 text-sm text-gray-600 truncate">
-                    Selected: <span className="font-medium">{file1.name}</span>
-                  </p>
-                )}
-              </div>
-
-              {/* Google Drive 2 */}
-              <div className="border-2 border-dashed border-teal-200 rounded-xl p-6 hover:border-teal-400 transition bg-teal-50">
-                <div className="text-center mb-4">
-                  <div className="h-12 w-12 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <Upload className="h-6 w-6 text-teal-600" />
-                  </div>
-                  <h3 className="font-semibold text-lg mb-1 text-gray-800">Google Drive 2</h3>
-                  <p className="text-sm text-gray-600">Backup storage</p>
-                </div>
-                <input
-                  type="file"
-                  accept="image/*,.pdf,.csv"
-                  onChange={(e) => setFile2(e.target.files ? e.target.files[0] : null)}
-                  className="w-full mb-4 text-sm"
-                />
-                <button
-                  onClick={() => handleUpload(file2, 2)}
-                  disabled={!file2}
-                  className={`w-full py-3 rounded-lg font-medium transition ${
-                    file2
-                      ? "bg-gradient-to-r from-teal-600 to-blue-500 text-white hover:opacity-90"
-                      : "bg-gray-100 text-gray-400 cursor-not-allowed"
-                  }`}
-                >
-                  {file2 ? `Upload ${file2.name}` : "Select File First"}
-                </button>
-                {file2 && (
-                  <p className="mt-3 text-sm text-gray-600 truncate">
-                    Selected: <span className="font-medium">{file2.name}</span>
-                  </p>
-                )}
-              </div>
-            </div>
-
-            <div className="text-center">
-              <button
-                onClick={() => {
-                  if (file1) handleUpload(file1, 1);
-                  if (file2) handleUpload(file2, 2);
-                  if (!file1 && !file2) alert("Please select files first");
-                }}
-                className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-8 py-3 rounded-lg font-medium hover:opacity-90 transition"
-              >
-                Upload Both Files
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
+    <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="py-16 px-6 max-w-7xl mx-auto">
-        <div className="text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
-            Advanced Thermal Imaging for
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-teal-500">
-              Solar Panel Inspection
-            </span>
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-10">
-            Drone-based thermal inspection technology that detects hotspots, defects, 
-            and efficiency issues in solar panels with unprecedented accuracy and speed.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={() => loggedIn ? setShowUpload(true) : setShowLogin(true)}
-              className="bg-gradient-to-r from-blue-600 to-teal-500 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:opacity-90 transition shadow-lg"
-            >
-              {loggedIn ? "Upload Inspection Data" : "Start Free Trial"}
-            </button>
-            <button className="bg-white text-blue-600 border-2 border-blue-600 px-8 py-4 rounded-xl font-semibold text-lg hover:bg-blue-50 transition shadow-lg">
-              Learn More
-            </button>
-          </div>
-        </div>
-      </section>
+      <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full -z-10 bg-gradient-to-tr from-orange-50 to-blue-50"></div>
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-orange-200/30 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute top-1/2 -left-24 w-72 h-72 bg-blue-200/20 rounded-full blur-3xl"></div>
 
-      {/* How It Works Section */}
-      <section id="how-it-works" className="py-16 bg-white px-6">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">
-            How Thermal Solar Inspection Works
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center p-6">
-              <div className="h-20 w-20 bg-gradient-to-r from-blue-100 to-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <span className="text-2xl font-bold text-blue-600">1</span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-4xl mx-auto">
+            {user ? (
+              <div className="inline-flex items-center space-x-2 bg-emerald-100 text-emerald-700 px-6 py-2 rounded-full font-bold text-lg mb-8 animate-in zoom-in duration-500 shadow-sm border border-emerald-200">
+                <CheckCircle size={20} />
+                <span>Welcome back, <span className="text-emerald-900 capitalize">{user.name}</span>!</span>
               </div>
-              <h3 className="text-xl font-semibold mb-3">Drone Flight & Data Capture</h3>
-              <p className="text-gray-600">
-                Autonomous drones equipped with thermal cameras fly over solar farms,
-                capturing high-resolution thermal images of every panel.
-              </p>
-            </div>
-            <div className="text-center p-6">
-              <div className="h-20 w-20 bg-gradient-to-r from-teal-100 to-teal-50 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <span className="text-2xl font-bold text-teal-600">2</span>
+            ) : (
+              <div className="inline-flex items-center space-x-2 bg-orange-100 text-orange-700 px-4 py-1.5 rounded-full font-medium text-sm mb-6 animate-bounce">
+                <Sun size={16} />
+                <span>Next-Gen Solar Technology</span>
               </div>
-              <h3 className="text-xl font-semibold mb-3">Hotspot Detection</h3>
-              <p className="text-gray-600">
-                AI-powered analysis identifies hotspots, micro-cracks, and defects that
-                indicate panel degradation or malfunction.
-              </p>
-            </div>
-            <div className="text-center p-6">
-              <div className="h-20 w-20 bg-gradient-to-r from-purple-100 to-purple-50 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <span className="text-2xl font-bold text-purple-600">3</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Report Generation</h3>
-              <p className="text-gray-600">
-                Detailed reports with actionable insights are generated, helping maintenance
-                teams prioritize repairs and optimize performance.
-              </p>
+            )}
+
+            <h1 className="text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight mb-8">
+              Harness the Power of <span className="text-orange-600">Solar Thermal</span> Energy
+            </h1>
+            <p className="text-xl text-slate-600 mb-10 leading-relaxed">
+              Our advanced thermal solar panels convert sunlight into efficient heat for your home or business, reducing carbon footprint and energy costs simultaneously.
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+              {!user ? (
+                <>
+                  <Link
+                    href="/register"
+                    className="w-full sm:w-auto px-8 py-4 bg-orange-600 text-white rounded-xl font-semibold shadow-lg shadow-orange-200 hover:bg-orange-700 hover:-translate-y-1 transition-all flex items-center justify-center"
+                  >
+                    Get a Free Quote <ArrowRight className="ml-2" size={20} />
+                  </Link>
+                  <Link
+                    href="/about"
+                    className="w-full sm:w-auto px-8 py-4 bg-white text-slate-900 border border-slate-200 rounded-xl font-semibold hover:bg-slate-50 transition-all flex items-center justify-center shadow-sm"
+                  >
+                    Learn More
+                  </Link>
+                </>
+              ) : (
+                <Link
+                  href="/upload"
+                  className="w-full sm:w-auto px-10 py-4 bg-slate-900 text-white rounded-xl font-bold shadow-xl hover:bg-slate-800 hover:-translate-y-1 transition-all flex items-center justify-center"
+                >
+                  Go to Drive Upload <FileUp className="ml-2" size={20} />
+                </Link>
+              )}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features/Benefits Section */}
-      <section id="benefits" className="py-16 px-6 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">
-            Key Benefits of Thermal Drone Inspection
-          </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Conditional Drive Upload Section */}
+      {user && (
+        <section id="drive-section" className="py-24 bg-slate-50 border-y border-slate-100 scroll-mt-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="bg-white rounded-[3rem] p-12 shadow-2xl shadow-orange-100 border border-orange-100/50 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-orange-50 rounded-full translate-x-1/2 -translate-y-1/2 -z-0"></div>
+
+              <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                  <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mb-6">
+                    <HardDrive className="text-orange-600" size={32} />
+                  </div>
+                  <h2 className="text-4xl font-bold text-slate-900 mb-6 font-primary italic">Secure Document Cloud</h2>
+                  <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+                    As a registered user, you can now upload your installation plans, energy bills, and site photos directly to our secure Google Drive folder for faster processing.
+                  </p>
+                  <div className="flex flex-col space-y-4">
+                    <div className="flex items-center space-x-3 text-slate-700 font-bold bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+                      <Database className="text-blue-500" size={24} />
+                      <span>Status: Connected to Google Cloud</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <Link
+                    href="/upload"
+                    className="group p-8 bg-orange-600 rounded-[2rem] text-white hover:scale-[1.02] transition-all shadow-xl shadow-orange-200 flex flex-col items-center text-center"
+                  >
+                    <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center mb-6 group-hover:rotate-12 transition-transform">
+                      <FileUp size={28} />
+                    </div>
+                    <h3 className="text-xl font-bold mb-2 uppercase">Upload File 1</h3>
+                    <p className="text-orange-100 text-sm">Upload installation blueprints</p>
+                  </Link>
+
+                  <Link
+                    href="/upload"
+                    className="group p-8 bg-white border-2 border-orange-100 rounded-[2rem] text-slate-900 hover:border-orange-500 transition-all shadow-lg flex flex-col items-center text-center"
+                  >
+                    <div className="w-14 h-14 bg-orange-50 rounded-full flex items-center justify-center mb-6 group-hover:-rotate-12 transition-transform">
+                      <FileUp className="text-orange-600" size={28} />
+                    </div>
+                    <h3 className="text-xl font-bold mb-2 uppercase text-orange-600">Upload File 2</h3>
+                    <p className="text-slate-500 text-sm italic font-medium">Upload site photographs</p>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Features Section */}
+      <section className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 font-primary">Why Solar Thermal?</h2>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto italic font-medium">
+              More than just electricity — we provide heat, efficiency, and sustainability.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { title: "90% Faster", desc: "Reduce inspection time compared to manual methods" },
-              { title: "Cost Efficient", desc: "Lower operational costs and manpower requirements" },
-              { title: "High Accuracy", desc: "Detect issues invisible to the naked eye" },
-              { title: "Safe Operation", desc: "No need for scaffolding or risky manual inspection" },
-              { title: "Data Analytics", desc: "Comprehensive performance tracking over time" },
-              { title: "Early Detection", desc: "Identify problems before they cause system failure" },
-              { title: "Scalable Solution", desc: "Works for small installations to large solar farms" },
-              { title: "24/7 Monitoring", desc: "Regular automated inspections ensure continuous operation" },
-            ].map((benefit, index) => (
+              {
+                icon: <Zap className="text-orange-500" />,
+                title: "Maximum Efficiency",
+                desc: "Solar thermal collectors are up to 70% more efficient at harvesting energy than traditional PV panels.",
+              },
+              {
+                icon: <Shield className="text-blue-500" />,
+                title: "Built to Last",
+                desc: "Weather-resistant materials and robust design ensure your system operates flawlessly for over 25 years.",
+              },
+              {
+                icon: <Globe className="text-emerald-500" />,
+                title: "Eco-Friendly",
+                desc: "Significantly reduce your residential CO2 emissions by switching to solar thermal water heating solutions.",
+              },
+            ].map((feature, i) => (
               <div
-                key={index}
-                className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow border border-gray-100"
+                key={i}
+                className="p-8 rounded-3xl border border-slate-100 bg-slate-50 hover:bg-white hover:shadow-2xl hover:shadow-orange-100 hover:-translate-y-2 transition-all duration-300"
               >
-                <h3 className="font-bold text-xl mb-2 text-blue-700">{benefit.title}</h3>
-                <p className="text-gray-600">{benefit.desc}</p>
+                <div className="w-14 h-14 rounded-2xl bg-white shadow-md flex items-center justify-center mb-6">
+                  {feature.icon}
+                </div>
+                <h3 className="text-xl font-bold text-slate-900 mb-4">{feature.title}</h3>
+                <p className="text-slate-600 leading-relaxed italic">{feature.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer id="contact" className="bg-gray-900 text-white py-12 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <h3 className="text-xl font-bold mb-4">ThermalSolar Drone</h3>
-              <p className="text-gray-400">
-                Revolutionizing solar panel maintenance through advanced thermal imaging technology.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#features" className="hover:text-white transition">Features</a></li>
-                <li><a href="#how-it-works" className="hover:text-white transition">How It Works</a></li>
-                <li><a href="#benefits" className="hover:text-white transition">Benefits</a></li>
-                <li><a href="#contact" className="hover:text-white transition">Contact</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Contact Us</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li>info@thermalsolardrone.com</li>
-                <li>+1 (555) 123-4567</li>
-                <li>San Francisco, CA</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Get Started</h4>
-              <button
-                onClick={() => loggedIn ? setShowUpload(true) : setShowLogin(true)}
-                className="bg-gradient-to-r from-blue-600 to-teal-500 text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition"
-              >
-                {loggedIn ? "Upload Data" : "Login Now"}
-              </button>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500">
-            <p>&copy; 2024 ThermalSolar Drone Inspection. All rights reserved.</p>
-            <p className="text-sm mt-2">Advanced thermal imaging for sustainable energy solutions</p>
+      {/* Statistics Section */}
+      <section className="py-20 bg-slate-900 text-white overflow-hidden relative">
+        <div className="absolute top-0 right-0 w-full h-full opacity-10 pointer-events-none">
+          <Sun className="absolute -top-20 -right-20 w-80 h-80 text-orange-400" />
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+            {[
+              { label: "Installations", value: "2,500+" },
+              { label: "CO2 Saved", value: "15k Tons" },
+              { label: "Customer Rating", value: "4.9/5" },
+              { label: "Maintenance", value: "24/7" },
+            ].map((stat, i) => (
+              <div key={i}>
+                <div className="text-4xl md:text-5xl font-extrabold text-orange-500 mb-2">{stat.value}</div>
+                <div className="text-slate-400 font-medium uppercase tracking-wider text-sm">{stat.label}</div>
+              </div>
+            ))}
           </div>
         </div>
-      </footer>
+      </section>
+
+      {/* CTA Section */}
+      {!user && (
+        <section className="py-24 bg-orange-600 relative overflow-hidden">
+          <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-8">
+              Ready to switch to cleaner, cheaper energy?
+            </h2>
+            <p className="text-orange-100 text-xl mb-10 font-medium italic">
+              Join thousands of satisfied homeowners who have already made the switch.
+            </p>
+            <Link
+              href="/contact"
+              className="inline-flex items-center px-10 py-5 bg-white text-orange-600 rounded-2xl font-bold text-lg shadow-xl hover:scale-105 active:scale-95 transition-all"
+            >
+              Start Your Journey <ArrowRight className="ml-2" />
+            </Link>
+          </div>
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/10 rounded-full -translate-x-1/2 translate-y-1/3"></div>
+        </section>
+      )}
     </div>
   );
 }
