@@ -3,10 +3,11 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Sun, Menu, X, LogOut, User as UserIcon, HardDrive } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 export default function Navbar() {
     const router = useRouter();
+    const pathname = usePathname();
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -61,7 +62,9 @@ export default function Navbar() {
                             <Link
                                 key={link.name}
                                 href={link.href}
-                                className={`font-medium transition-colors hover:text-orange-500 ${isScrolled ? "text-slate-700" : "text-slate-800"
+                                className={`font-medium transition-colors hover:text-orange-500 ${pathname === link.href
+                                    ? "text-orange-500 font-semibold"
+                                    : isScrolled ? "text-slate-700" : "text-slate-800"
                                     }`}
                             >
                                 {link.name}
@@ -86,7 +89,9 @@ export default function Navbar() {
                                 <div className="flex items-center gap-4">
                                     <Link
                                         href="/login"
-                                        className={`font-medium transition-colors hover:text-orange-500 ${isScrolled ? "text-slate-700" : "text-slate-800"
+                                        className={`font-medium transition-colors hover:text-orange-500 ${pathname === "/login"
+                                            ? "text-orange-500 font-semibold"
+                                            : isScrolled ? "text-slate-700" : "text-slate-800"
                                             }`}
                                     >
                                         Login
@@ -123,7 +128,10 @@ export default function Navbar() {
                                 key={link.name}
                                 href={link.href}
                                 onClick={() => setIsMenuOpen(false)}
-                                className="block px-3 py-4 text-base font-medium text-slate-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition-colors"
+                                className={`block px-3 py-4 text-base font-medium rounded-lg transition-colors ${pathname === link.href
+                                    ? "text-orange-600 bg-orange-50"
+                                    : "text-slate-700 hover:bg-orange-50 hover:text-orange-600"
+                                    }`}
                             >
                                 {link.name}
                             </Link>
@@ -141,7 +149,10 @@ export default function Navbar() {
                                     <Link
                                         href="/login"
                                         onClick={() => setIsMenuOpen(false)}
-                                        className="w-full text-center py-3 rounded-lg border border-orange-500 text-orange-500 font-medium"
+                                        className={`w-full text-center py-3 rounded-lg border font-medium transition-colors ${pathname === "/login"
+                                            ? "border-orange-500 text-orange-500 bg-orange-50"
+                                            : "border-slate-200 text-slate-700 hover:border-orange-500 hover:text-orange-500"
+                                            }`}
                                     >
                                         Login
                                     </Link>
