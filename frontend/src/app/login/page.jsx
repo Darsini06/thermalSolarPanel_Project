@@ -55,13 +55,9 @@ export default function LoginPage() {
                 <div className="relative z-10 text-white max-w-md">
                     <h2 className="text-4xl font-extrabold mb-6 leading-tight">Welcome back to the future of auditing.</h2>
                     <p className="text-orange-100 text-lg mb-8 italic">Access your dashboard to monitor your solar assets and track your inspection reports in real-time.</p>
-                    <div className="flex -space-x-3">
-                        {[1, 2, 3, 4].map(i => (
-                            <div key={i} className="w-12 h-12 rounded-full border-2 border-orange-600 bg-orange-200"></div>
-                        ))}
-                        <div className="w-12 h-12 rounded-full border-2 border-orange-600 bg-orange-700 flex items-center justify-center text-xs font-bold">+12k</div>
-                    </div>
-                    <p className="mt-4 text-sm font-medium text-orange-200 uppercase tracking-widest">Trusted by 12,000+ homeowners</p>
+                    
+                    {/* Removed the trusted by homeowners section */}
+                    
                 </div>
             </div>
 

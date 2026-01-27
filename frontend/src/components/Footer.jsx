@@ -21,12 +21,6 @@ const Footer = () => {
     const currentYear = new Date().getFullYear();
 
     const footerLinks = {
-        Solutions: [
-            { name: "Thermal Inspection", href: "/services/thermal" },
-            { name: "Aerial Mapping", href: "/services/mapping" },
-            { name: "Fault Detection", href: "/services/faults" },
-            { name: "Performance Analysis", href: "/services/analysis" },
-        ],
         Company: [
             { name: "About Us", href: "/about" },
             { name: "What We Offers", href: "/offers" },
