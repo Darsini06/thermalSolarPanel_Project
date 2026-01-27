@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import {
   ArrowRight, Zap, Shield, Globe, Sun, FileUp, Database,
   HardDrive, CheckCircle, User, Mail, Phone, MapPin,
-  Settings, MessageSquare, Send
+  Settings, MessageSquare, Send, CloudUpload, Activity
 } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -50,21 +50,10 @@ export default function HomePage() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
-            {user ? (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="inline-flex items-center space-x-2 bg-emerald-100 text-emerald-700 px-6 py-2 rounded-full font-bold text-lg mb-8 shadow-sm border border-emerald-200"
-              >
-                <CheckCircle size={20} />
-                <span>Welcome back, <span className="text-emerald-900 capitalize">{user.name}</span>!</span>
-              </motion.div>
-            ) : (
-              <div className="inline-flex items-center space-x-2 bg-orange-100 text-orange-700 px-4 py-1.5 rounded-full font-medium text-sm mb-6 animate-bounce">
-                <Sun size={16} />
-                <span>Next-Gen Solar Technology</span>
-              </div>
-            )}
+            <div className="inline-flex items-center space-x-2 bg-orange-100 text-orange-700 px-4 py-1.5 rounded-full font-medium text-sm mb-6 animate-bounce">
+              <Sun size={16} />
+              <span>Next-Gen Solar Technology</span>
+            </div>
 
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
@@ -88,82 +77,135 @@ export default function HomePage() {
               transition={{ delay: 0.2 }}
               className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4"
             >
-              {!user ? (
-                <>
-                  <Link
-                    href="#inspection-form"
-                    className="w-full sm:w-auto px-8 py-4 bg-orange-600 text-white rounded-xl font-semibold shadow-lg shadow-orange-200 hover:bg-orange-700 hover:-translate-y-1 transition-all flex items-center justify-center uppercase tracking-wider"
-                  >
-                    Book Inspection <ArrowRight className="ml-2" size={20} />
-                  </Link>
-                  <Link
-                    href="/about"
-                    className="w-full sm:w-auto px-8 py-4 bg-white text-slate-900 border border-slate-200 rounded-xl font-semibold hover:bg-slate-50 transition-all flex items-center justify-center shadow-sm uppercase tracking-wider"
-                  >
-                    Learn More
-                  </Link>
-                </>
-              ) : (
+              <>
                 <Link
-                  href="/upload"
-                  className="w-full sm:w-auto px-10 py-4 bg-slate-900 text-white rounded-xl font-bold shadow-xl hover:bg-slate-800 hover:-translate-y-1 transition-all flex items-center justify-center uppercase tracking-widest"
+                  href="#inspection-form"
+                  className="w-full sm:w-auto px-8 py-4 bg-orange-600 text-white rounded-xl font-semibold shadow-lg shadow-orange-200 hover:bg-orange-700 hover:-translate-y-1 transition-all flex items-center justify-center uppercase tracking-wider"
                 >
-                  Go to Drive Upload <FileUp className="ml-2" size={20} />
+                  Book Inspection <ArrowRight className="ml-2" size={20} />
                 </Link>
-              )}
+                <Link
+                  href="/about"
+                  className="w-full sm:w-auto px-8 py-4 bg-white text-slate-900 border border-slate-200 rounded-xl font-semibold hover:bg-slate-50 transition-all flex items-center justify-center shadow-sm uppercase tracking-wider"
+                >
+                  Learn More
+                </Link>
+              </>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Conditional Drive Upload Section */}
+      {/* Cloud Asset Sync Section */}
       {user && (
-        <section id="drive-section" className="py-24 bg-slate-50 border-y border-slate-100 scroll-mt-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-white rounded-[3rem] p-12 shadow-2xl shadow-orange-100 border border-orange-100/50 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-orange-50 rounded-full translate-x-1/2 -translate-y-1/2 -z-0"></div>
+        <section id="drive-section" className="py-24 bg-white relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-orange-50/50 rounded-full blur-[120px] -mr-64 -mt-64" />
+          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-50/30 rounded-full blur-[120px] -ml-64 -mb-64" />
 
-              <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div>
-                  <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mb-6">
-                    <HardDrive className="text-orange-600" size={32} />
-                  </div>
-                  <h2 className="text-4xl font-bold text-slate-900 mb-6 font-primary italic">Secure Document Cloud</h2>
-                  <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-                    As a registered user, you can now upload your installation plans, energy bills, and site photos directly to our secure Google Drive folder for faster processing.
-                  </p>
-                  <div className="flex flex-col space-y-4">
-                    <div className="flex items-center space-x-3 text-slate-700 font-bold bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
-                      <Database className="text-blue-500" size={24} />
-                      <span>Status: Connected to Google Cloud</span>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="lg:col-span-5"
+              >
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-100 text-orange-600 text-xs font-bold uppercase tracking-widest mb-6 border border-orange-200">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-600"></span>
+                  </span>
+                  Cloud Diagnostics Active
+                </div>
+                <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">
+                  Synchronize Your <br />
+                  <span className="bg-gradient-to-r from-orange-600 to-orange-400 bg-clip-text text-transparent italic">Site Assets</span>
+                </h2>
+                <p className="text-lg text-slate-600 mb-8 leading-relaxed max-w-lg">
+                  Connect your Google Drive or cloud storage containing site photographs and installation plans. Our AI will automatically index and prepare them for inspection.
+                </p>
+
+                <div className="space-y-4">
+                  {[
+                    { icon: Globe, label: "Real-time synchronization" },
+                    { icon: Shield, label: "End-to-end encrypted transfer" },
+                    { icon: Database, label: "Automatic asset classification" },
+                  ].map((item, idx) => (
+                    <div key={idx} className="flex items-center gap-3 text-slate-700 font-semibold group">
+                      <div className="p-2 bg-slate-50 border border-slate-100 rounded-lg group-hover:bg-orange-50 group-hover:border-orange-100 transition-colors">
+                        <item.icon size={18} className="text-orange-600" />
+                      </div>
+                      <span>{item.label}</span>
                     </div>
+                  ))}
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="lg:col-span-7"
+              >
+                <div className="bg-slate-900 rounded-[3rem] p-1 md:p-1.5 shadow-2xl shadow-slate-200">
+                  <div className="bg-white rounded-[2.8rem] p-8 md:p-12 border border-slate-100">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-10">
+                      <div className="flex items-center gap-4">
+                        <div className="w-16 h-16 bg-slate-900 rounded-2xl flex items-center justify-center text-white shadow-xl">
+                          <HardDrive size={30} />
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-slate-900 text-xl tracking-tight italic">Secure Linkage</h3>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-8">
+                      {/* Drive Link 1 */}
+                      <div className="relative group">
+                        <div className="flex items-center justify-between mb-3 pl-1">
+                        </div>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            placeholder="Paste Google Drive link for site plans..."
+                            className="w-full pl-6 pr-32 py-5 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 focus:bg-white transition-all text-sm font-semibold text-slate-700 placeholder:text-slate-300"
+                          />
+                          <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                            <button className="bg-orange-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-orange-700 active:scale-95 transition-all shadow-lg shadow-orange-500/20 flex items-center gap-2">
+                              <CloudUpload size={16} />
+                              Import
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Drive Link 2 */}
+                      <div className="relative group pt-4 border-t border-slate-50">
+                        <div className="flex items-center justify-between mb-3 pl-1">
+                        </div>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            placeholder="Paste Google Drive link for site photos..."
+                            className="w-full pl-6 pr-32 py-5 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all text-sm font-semibold text-slate-700 placeholder:text-slate-300"
+                          />
+                          <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                            <button className="bg-slate-900 text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-slate-800 active:scale-95 transition-all shadow-lg flex items-center gap-2">
+                              <CloudUpload size={16} />
+                              Import
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
                   </div>
                 </div>
+              </motion.div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <Link
-                    href="/upload"
-                    className="group p-8 bg-orange-600 rounded-[2rem] text-white hover:scale-[1.02] transition-all shadow-xl shadow-orange-200 flex flex-col items-center text-center"
-                  >
-                    <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center mb-6 group-hover:rotate-12 transition-transform">
-                      <FileUp size={28} />
-                    </div>
-                    <h3 className="text-xl font-bold mb-2 uppercase">Upload File 1</h3>
-                    <p className="text-orange-100 text-sm">Upload installation blueprints</p>
-                  </Link>
-
-                  <Link
-                    href="/upload"
-                    className="group p-8 bg-white border-2 border-orange-100 rounded-[2rem] text-slate-900 hover:border-orange-500 transition-all shadow-lg flex flex-col items-center text-center"
-                  >
-                    <div className="w-14 h-14 bg-orange-50 rounded-full flex items-center justify-center mb-6 group-hover:-rotate-12 transition-transform">
-                      <FileUp className="text-orange-600" size={28} />
-                    </div>
-                    <h3 className="text-xl font-bold mb-2 uppercase text-orange-600">Upload File 2</h3>
-                    <p className="text-slate-500 text-sm italic font-medium">Upload site photographs</p>
-                  </Link>
-                </div>
-              </div>
             </div>
           </div>
         </section>

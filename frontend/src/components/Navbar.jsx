@@ -66,43 +66,38 @@ export default function Navbar() {
                             </Link>
                         ))}
 
-                        {isLoggedIn ? (
-                            <div className="flex items-center space-x-6">
-                                <Link
-                                    href="/upload"
-                                    className={`flex items-center space-x-2 font-medium transition-colors hover:text-orange-500 ${isScrolled ? "text-slate-700" : "text-slate-800"}`}
-                                >
-                                    <HardDrive size={18} className="text-orange-500" />
-                                    <span>My Cloud</span>
-                                </Link>
-                                <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600">
-                                    <UserIcon size={20} />
+                        <div className="flex items-center gap-4 pl-4 border-l border-slate-200">
+                            {isLoggedIn ? (
+                                <div className="flex items-center space-x-6">
+                                    <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 cursor-pointer hover:bg-orange-200 transition-colors">
+                                        <UserIcon size={20} />
+                                    </div>
+                                    <button
+                                        onClick={handleLogout}
+                                        className="flex items-center space-x-2 text-slate-600 hover:text-red-500 font-medium transition-colors"
+                                    >
+                                        <LogOut size={18} />
+                                        <span className="hidden lg:inline">Logout</span>
+                                    </button>
                                 </div>
-                                <button
-                                    onClick={handleLogout}
-                                    className="flex items-center space-x-2 text-slate-600 hover:text-red-500 font-medium transition-colors"
-                                >
-                                    <LogOut size={18} />
-                                    <span>Logout</span>
-                                </button>
-                            </div>
-                        ) : (
-                            <>
-                                <Link
-                                    href="/login"
-                                    className={`font-medium transition-colors hover:text-orange-500 ${isScrolled ? "text-slate-700" : "text-slate-800"
-                                        }`}
-                                >
-                                    Login
-                                </Link>
-                                <Link
-                                    href="/register"
-                                    className="px-5 py-2 rounded-full bg-orange-600 text-white font-medium hover:bg-orange-700 shadow-lg shadow-orange-200 transition-all"
-                                >
-                                    Get Started
-                                </Link>
-                            </>
-                        )}
+                            ) : (
+                                <div className="flex items-center gap-4">
+                                    <Link
+                                        href="/login"
+                                        className={`font-medium transition-colors hover:text-orange-500 ${isScrolled ? "text-slate-700" : "text-slate-800"
+                                            }`}
+                                    >
+                                        Login
+                                    </Link>
+                                    <Link
+                                        href="/register"
+                                        className="px-5 py-2 rounded-full bg-slate-900 text-white font-medium hover:bg-slate-800 shadow-lg transition-all"
+                                    >
+                                        Get Started
+                                    </Link>
+                                </div>
+                            )}
+                        </div>
                     </div>
 
                     {/* Mobile Menu Button */}
