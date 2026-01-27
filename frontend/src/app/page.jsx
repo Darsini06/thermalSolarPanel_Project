@@ -17,7 +17,7 @@ export default function HomePage() {
     phone: "",
     location: "",
     systemSize: "",
-    type: "Residential",
+    type: "",
     message: ""
   });
 
