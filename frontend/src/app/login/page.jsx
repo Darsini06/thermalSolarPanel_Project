@@ -44,7 +44,7 @@ export default function LoginPage() {
                 localStorage.setItem("user_email", formData.email);
                 setLoggedIn(true);
                 setTimeout(() => {
-                    router.push("/");
+                    router.push("/profile");
                 }, 1500);
             }
         } catch (err) {

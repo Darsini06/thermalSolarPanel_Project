@@ -46,7 +46,7 @@ export default function RegisterPage() {
                 localStorage.setItem("user_email", formData.email);
                 setSuccess(true);
                 setTimeout(() => {
-                    router.push("/");
+                    router.push("/profile");
                 }, 1500);
             }
         } catch (err) {
