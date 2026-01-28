@@ -138,12 +138,21 @@ export default function Navbar() {
                         ))}
                         <div className="pt-4 flex flex-col space-y-3">
                             {isLoggedIn ? (
-                                <button
-                                    onClick={handleLogout}
-                                    className="w-full text-center py-3 rounded-lg border border-red-200 text-red-600 font-medium"
-                                >
-                                    Logout
-                                </button>
+                                <>
+                                    <Link
+                                        href="/profile"
+                                        onClick={() => setIsMenuOpen(false)}
+                                        className="w-full text-center py-3 rounded-lg border border-orange-200 text-orange-600 font-medium hover:bg-orange-50"
+                                    >
+                                        Profile
+                                    </Link>
+                                    <button
+                                        onClick={handleLogout}
+                                        className="w-full text-center py-3 rounded-lg border border-red-200 text-red-600 font-medium"
+                                    >
+                                        Logout
+                                    </button>
+                                </>
                             ) : (
                                 <>
                                     <Link
