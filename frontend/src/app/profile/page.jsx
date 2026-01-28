@@ -150,7 +150,7 @@ export default function ProfilePage() {
                                                     Site Photos
                                                 </a>
                                             </div>
-                                        </div>
+                                        </div>     
                                     ))}
                                 </div>
                             ) : (
