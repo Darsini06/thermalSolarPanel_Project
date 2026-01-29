@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import {
     User, Mail, Phone, MapPin, Settings, Zap,
-    MessageSquare, Send, CheckCircle
+    MessageSquare, Send, CheckCircle, Calendar, Clock, Loader2
 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -15,17 +15,84 @@ export default function BookingPage() {
         location: "",
         systemSize: "",
         type: "Residential",
-        message: ""
+        message: "",
+        date: "",
+        time: ""
     });
+
+    const [submitting, setSubmitting] = useState(false);
+    const [status, setStatus] = useState({ type: '', message: '' });
+
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Form submitted:", formData);
-        alert("Thank you! Your inspection request has been received.");
+        setSubmitting(true);
+        setStatus({ type: '', message: '' });
+
+        try {
+            // Map frontend fields to backend GuestBookingCreate schema
+            const payload = {
+                name: formData.name,
+                email: formData.email,
+                contact_phone: formData.phone,
+                location: formData.location,
+                service_type: formData.type,
+                system_size: formData.systemSize,
+                notes: formData.message,
+                date: formData.date,
+                time: formData.time
+            };
+
+            const response = await fetch(`${API_URL}/bookings/guest`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.detail || 'Failed to submit booking');
+            }
+
+            const data = await response.json();
+            console.log("Booking successful:", data);
+
+            setStatus({
+                type: 'success',
+                message: 'Thank you! Your inspection request has been received. We will contact you shortly.'
+            });
+
+            // Reset form
+            setFormData({
+                name: "",
+                email: "",
+                phone: "",
+                location: "",
+                systemSize: "",
+                type: "Residential",
+                message: "",
+                date: "",
+                time: ""
+            });
+
+        } catch (error) {
+            console.error("Error submitting booking:", error);
+            // Log the API URL being used to help debug
+            console.log("Attempted to fetch:", `${API_URL}/bookings/guest`);
+            setStatus({
+                type: 'error',
+                message: error.message || 'Something went wrong. Please try again later.'
+            });
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     return (
@@ -106,6 +173,12 @@ export default function BookingPage() {
                         className="bg-white p-8 md:p-10 rounded-[3rem] shadow-2xl shadow-orange-100 border border-slate-100"
                     >
                         <form onSubmit={handleSubmit} className="space-y-5">
+                            {status.message && (
+                                <div className={`p-4 rounded-2xl text-center ${status.type === 'success' ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-red-50 text-red-700 border border-red-100'}`}>
+                                    {status.message}
+                                </div>
+                            )}
+
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div className="relative">
                                     <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
@@ -114,6 +187,7 @@ export default function BookingPage() {
                                         name="name"
                                         placeholder="Full Name"
                                         required
+                                        value={formData.name}
                                         onChange={handleChange}
                                         className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-orange-500 focus:bg-white transition-all outline-none"
                                     />
@@ -125,6 +199,7 @@ export default function BookingPage() {
                                         name="email"
                                         placeholder="Email Address"
                                         required
+                                        value={formData.email}
                                         onChange={handleChange}
                                         className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-orange-500 focus:bg-white transition-all outline-none"
                                     />
@@ -139,6 +214,7 @@ export default function BookingPage() {
                                         name="phone"
                                         placeholder="Phone Number"
                                         required
+                                        value={formData.phone}
                                         onChange={handleChange}
                                         className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-orange-500 focus:bg-white transition-all outline-none"
                                     />
@@ -150,8 +226,34 @@ export default function BookingPage() {
                                         name="location"
                                         placeholder="Site Location / Address"
                                         required
+                                        value={formData.location}
                                         onChange={handleChange}
                                         className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-orange-500 focus:bg-white transition-all outline-none"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div className="relative">
+                                    <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
+                                    <input
+                                        type="date"
+                                        name="date"
+                                        required
+                                        value={formData.date}
+                                        onChange={handleChange}
+                                        className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-orange-500 focus:bg-white transition-all outline-none text-slate-500"
+                                    />
+                                </div>
+                                <div className="relative">
+                                    <Clock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
+                                    <input
+                                        type="time"
+                                        name="time"
+                                        required
+                                        value={formData.time}
+                                        onChange={handleChange}
+                                        className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-orange-500 focus:bg-white transition-all outline-none text-slate-500"
                                     />
                                 </div>
                             </div>
@@ -161,8 +263,9 @@ export default function BookingPage() {
                                     <Settings className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
                                     <select
                                         name="type"
+                                        value={formData.type}
                                         onChange={handleChange}
-                                        className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-orange-500 focus:bg-white transition-all outline-none appearance-none"
+                                        className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-orange-500 focus:bg-white transition-all outline-none appearance-none text-slate-600"
                                     >
                                         <option value="Residential">Residential</option>
                                         <option value="Commercial">Commercial</option>
@@ -175,6 +278,7 @@ export default function BookingPage() {
                                         type="text"
                                         name="systemSize"
                                         placeholder="System Size (e.g. 10kW)"
+                                        value={formData.systemSize}
                                         onChange={handleChange}
                                         className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-orange-500 focus:bg-white transition-all outline-none"
                                     />
@@ -187,6 +291,7 @@ export default function BookingPage() {
                                     name="message"
                                     rows="4"
                                     placeholder="Tell us about your requirements..."
+                                    value={formData.message}
                                     onChange={handleChange}
                                     className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-orange-500 focus:bg-white transition-all outline-none resize-none"
                                 ></textarea>
@@ -194,9 +299,14 @@ export default function BookingPage() {
 
                             <button
                                 type="submit"
-                                className="w-full py-5 bg-orange-600 text-white rounded-2xl font-bold text-lg shadow-xl shadow-orange-200 hover:bg-orange-700 hover:-translate-y-1 transition-all flex items-center justify-center group uppercase tracking-widest"
+                                disabled={submitting}
+                                className="w-full py-5 bg-orange-600 text-white rounded-2xl font-bold text-lg shadow-xl shadow-orange-200 hover:bg-orange-700 hover:-translate-y-1 transition-all flex items-center justify-center group uppercase tracking-widest disabled:opacity-70 disabled:cursor-not-allowed"
                             >
-                                Submit Inspection Request <Send className="ml-3 w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                                {submitting ? <Loader2 className="animate-spin w-5 h-5" /> : (
+                                    <>
+                                        Submit Inspection Request <Send className="ml-3 w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                                    </>
+                                )}
                             </button>
                         </form>
                     </motion.div>

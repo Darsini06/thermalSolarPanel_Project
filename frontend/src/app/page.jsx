@@ -90,15 +90,20 @@ export default function HomePage() {
   const handleDriveLinkSubmit = async (e) => {
     e.preventDefault();
 
-    if (!driveLink1.trim() || !driveLink2.trim()) {
-      setUploadStatus({ type: "error", message: "Please provide both Google Drive links." });
+    if (!driveLink1.trim()) {
+      setUploadStatus({ type: "error", message: "Please provide the primary Google Drive link." });
       return;
     }
 
     const isValidLink = (link) => link.includes("drive.google.com") || link.includes("docs.google.com");
 
-    if (!isValidLink(driveLink1) || !isValidLink(driveLink2)) {
-      setUploadStatus({ type: "error", message: "Please enter valid Google Drive links (e.g., drive.google.com/...)." });
+    if (!isValidLink(driveLink1)) {
+      setUploadStatus({ type: "error", message: "Please enter a valid Google Drive link for Link 1." });
+      return;
+    }
+
+    if (driveLink2.trim() && !isValidLink(driveLink2)) {
+      setUploadStatus({ type: "error", message: "Please enter a valid Google Drive link for Link 2." });
       return;
     }
 
@@ -168,7 +173,7 @@ export default function HomePage() {
               transition={{ delay: 0.1 }}
               className="text-xl text-slate-600 mb-10 leading-relaxed"
             >
-              Ensure your solar infrastructure is operating at peak performance with our professional drone-based and thermographic inspection solutions.
+              Ensure your solar infrastructure is operating at peak performance with our professional drone-based inspection solutions.
             </motion.p>
 
             <motion.div
@@ -264,11 +269,11 @@ export default function HomePage() {
                     {/* Status Message */}
                     {uploadStatus.message && (
                       <div className={`mb-6 p-4 rounded-2xl flex items-center space-x-3 ${uploadStatus.type === "success" ? "bg-emerald-50 text-emerald-700 border border-emerald-100/50" :
-                          uploadStatus.type === "error" ? "bg-red-50 text-red-700 border border-red-100/50" :
-                            "bg-orange-50 text-orange-700 border border-orange-100/50"
+                        uploadStatus.type === "error" ? "bg-red-50 text-red-700 border border-red-100/50" :
+                          "bg-orange-50 text-orange-700 border border-orange-100/50"
                         }`}>
                         <div className={`w-8 h-8 rounded-full flex items-center justify-center ${uploadStatus.type === "success" ? "bg-emerald-100" :
-                            uploadStatus.type === "error" ? "bg-red-100" : "bg-orange-100"
+                          uploadStatus.type === "error" ? "bg-red-100" : "bg-orange-100"
                           }`}>
                           {uploadStatus.type === "success" ? <CheckCircle size={18} /> :
                             uploadStatus.type === "error" ? "✕" :
@@ -283,12 +288,12 @@ export default function HomePage() {
                         {/* Drive Link 1 */}
                         <div className="relative group">
                           <div className="flex items-center justify-between mb-3 pl-1">
-                            <label className="text-sm font-semibold text-slate-700">Site Plans Link</label>
+                            <label className="text-sm font-semibold text-slate-700">Drive Link</label>
                           </div>
                           <div className="relative">
                             <input
                               type="text"
-                              placeholder="Paste Google Drive link for site plans..."
+                              placeholder="Paste Google Drive link ..."
                               className="w-full pl-6 pr-32 py-5 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 focus:bg-white transition-all text-sm font-semibold text-slate-700 placeholder:text-slate-300"
                               value={driveLink1}
                               onChange={(e) => setDriveLink1(e.target.value)}
@@ -302,7 +307,7 @@ export default function HomePage() {
                               >
                                 {uploading ? (
                                   <>
-                                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-white bo    rder-t-transparent"></div>
                                     Saving...
                                   </>
                                 ) : (
@@ -310,7 +315,7 @@ export default function HomePage() {
                                     <CloudUpload size={16} />
                                     Import
                                   </>
-                                )}
+                                )}   
                               </button>
                             </div>
                           </div>
@@ -319,16 +324,15 @@ export default function HomePage() {
                         {/* Drive Link 2 */}
                         <div className="relative group pt-4 border-t border-slate-50">
                           <div className="flex items-center justify-between mb-3 pl-1">
-                            <label className="text-sm font-semibold text-slate-700">Site Photos Link</label>
+                            <label className="text-sm font-semibold text-slate-700">Drive Link 2</label>
                           </div>
                           <div className="relative">
                             <input
                               type="text"
-                              placeholder="Paste Google Drive link for site photos..."
+                              placeholder="Paste Google Drive link ..."
                               className="w-full pl-6 pr-32 py-5 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white transition-all text-sm font-semibold text-slate-700 placeholder:text-slate-300"
                               value={driveLink2}
                               onChange={(e) => setDriveLink2(e.target.value)}
-                              required
                             />
                             <div className="absolute right-3 top-1/2 -translate-y-1/2">
                               <button
@@ -356,35 +360,19 @@ export default function HomePage() {
                     <div className="mt-8 pt-6 border-t border-slate-100">
                       <div className="flex items-center justify-between">
                         <div className="text-sm text-slate-500">
-                          <span className="font-semibold text-slate-700">Note:</span> Links are saved to your account.
+                          <span className="font-semibold text-slate-700">Note:</span> Ensure your drive link in public.
                         </div>
                         <div className="flex items-center space-x-3">
-                          <button
-                            onClick={() => fetchPDFsForLink("your-link-id-here")} // You need to get the link ID
-                            className="px-4 py-2 bg-slate-900 text-white text-sm font-semibold rounded-lg hover:bg-slate-800 transition-colors"
-                          >
-                            View Uploaded PDFs
-                          </button>
-                          <Link
-                            href="/admin/drive-links"
-                            className="text-orange-600 hover:text-orange-700 font-semibold text-sm flex items-center gap-2"
-                          >
-                            View All Links <ArrowRight size={16} />
-                          </Link>
+
                         </div>
                       </div>
                     </div>
                     <div className="mt-10 pt-6 border-t border-slate-100">
                       <div className="flex items-center justify-between">
                         <div className="text-sm text-slate-500">
-                          <span className="font-semibold text-slate-700">Note:</span> Links are saved to your account.
+
                         </div>
-                        <Link
-                          href="/admin/drive-links"
-                          className="text-orange-600 hover:text-orange-700 font-semibold text-sm flex items-center gap-2"
-                        >
-                          View All Links <ArrowRight size={16} />
-                        </Link>
+
                       </div>
                     </div>
                   </div>
@@ -645,7 +633,7 @@ export default function HomePage() {
       </section>
 
       {/* Statistics Section */}
-      <section className="py-20 bg-slate-900 text-white overflow-hidden relative">
+      {/* <section className="py-20 bg-slate-900 text-white overflow-hidden relative">
         <div className="absolute top-0 right-0 w-full h-full opacity-10 pointer-events-none">
           <Sun className="absolute -top-20 -right-20 w-80 h-80 text-orange-400" />
         </div>
@@ -664,7 +652,7 @@ export default function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA Section */}
       {!user && (

@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import {
     Facebook,
-    Twitter,
+
     Linkedin,
     Instagram,
     Mail,
@@ -26,8 +26,7 @@ const Footer = () => {
             { name: "What We Offers", href: "/offers" },
             { name: "Booking", href: "/booking" },
             { name: "Contact", href: "/contact" },
-            { name: "Case Studies", href: "/cases" },
-            { name: "Careers", href: "/careers" },
+         
         ],
         Support: [
             { name: "Help Center", href: "/help" },
@@ -39,7 +38,7 @@ const Footer = () => {
 
     const socialLinks = [
         { icon: <Facebook size={20} />, href: "#", label: "Facebook" },
-        { icon: <Twitter size={20} />, href: "#", label: "Twitter" },
+      
         { icon: <Linkedin size={20} />, href: "#", label: "LinkedIn" },
         { icon: <Instagram size={20} />, href: "#", label: "Instagram" },
     ];
@@ -64,7 +63,7 @@ const Footer = () => {
                             </span>
                         </Link>
                         <p className="text-slate-400 mb-8 max-w-sm leading-relaxed">
-                            Pioneering the future of solar energy maintenance through advanced thermographic drone inspections and AI-driven diagnostic solutions.
+                            The future of solar energy maintenance through advanced drone inspections and AI-driven diagnostic solutions.
                         </p>
                         <div className="flex gap-4">
                             {socialLinks.map((social, index) => (
@@ -111,7 +110,7 @@ const Footer = () => {
                             </li>
                             <li className="flex items-center gap-3">
                                 <Phone className="text-orange-500 flex-shrink-0" size={18} />
-                                <span className="text-slate-400 text-sm">+1 (555) 123-4567</span>
+                                <span className="text-slate-400 text-sm">9978564578</span>
                             </li>
                             <li className="flex items-center gap-3">
                                 <Mail className="text-orange-500 flex-shrink-0" size={18} />
