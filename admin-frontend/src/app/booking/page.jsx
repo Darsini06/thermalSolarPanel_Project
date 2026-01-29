@@ -372,11 +372,6 @@ export default function BookingPage() {
                             </div>
                         </div>
 
-                        <div className="flex items-center space-x-4">
-                            <Link href="/contacts" className="text-xs font-bold text-gray-500 hover:text-gray-900 transition-colors">
-                                CONTACTS
-                            </Link>
-                        </div>
                     </div>
                 </div>
             </header>

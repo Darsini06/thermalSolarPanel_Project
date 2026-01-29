@@ -285,20 +285,6 @@ export default function HomePage() {
             </div>
 
             <div className="flex items-center space-x-4">
-              <Link
-                href="/booking"
-                className="px-4 py-2 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 rounded-md text-sm font-medium flex items-center transition-all duration-200 shadow-sm"
-              >
-                <Calendar className="w-4 h-4 mr-2" />
-                Bookings
-              </Link>
-              <Link
-                href="/contacts"
-                className="px-4 py-2 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 rounded-md text-sm font-medium flex items-center transition-all duration-200 shadow-sm"
-              >
-                <MessageSquare className="w-4 h-4 mr-2" />
-                Contacts
-              </Link>
               <button
                 onClick={fetchLinks}
                 disabled={loading}

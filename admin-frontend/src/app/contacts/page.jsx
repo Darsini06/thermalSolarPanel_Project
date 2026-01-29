@@ -241,11 +241,6 @@ export default function ContactsAdminPage() {
                             </div>
                         </div>
 
-                        <div className="flex items-center space-x-4">
-                            <Link href="/booking" className="text-xs font-bold text-gray-500 hover:text-gray-900 transition-colors">
-                                BOOKINGS
-                            </Link>
-                        </div>
                     </div>
                 </div>
             </header>
